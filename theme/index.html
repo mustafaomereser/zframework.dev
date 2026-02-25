@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="">
+  <title>zFramework — Topluluk Forumu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="forum.css">
+</head>
+<body>
+
+<!-- NAVBAR (include _navbar.html) -->
+<nav class="site-nav">
+  <div class="container"><div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="brand-icon"><i class="fas fa-terminal"></i></div>
+      zFramework<span class="brand-cursor"></span><span class="brand-ver">v2.8.0</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link-item active"><i class="fas fa-th-large fa-fw me-1"></i>Forum</a>
+      <a href="#" class="nav-link-item"><i class="fas fa-book fa-fw me-1"></i>Dökümanlar</a>
+      <a href="#" class="nav-link-item"><i class="fab fa-github fa-fw me-1"></i>GitHub</a>
+      <a href="#" class="nav-link-item"><i class="fas fa-code fa-fw me-1"></i>Örnekler</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-search"><i class="fas fa-search search-icon"></i><input type="text" placeholder="Konu, kullanıcı, etiket..."></div>
+      <button class="btn-icon btn-search-mobile" id="searchMobileBtn"><i class="fas fa-search"></i></button>
+      <button class="btn-icon" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i></button>
+      <div class="nav-lang" id="navLang">
+        <button class="btn-icon" id="langBtn" style="gap:5px;"><i class="fas fa-globe"></i><span class="nav-lang-label">TR</span><i class="fas fa-chevron-down nav-lang-arrow"></i></button>
+        <ul class="nav-lang-dropdown">
+          <li><a class="nav-lang-item active" href="#"><i class="fas fa-check nav-lang-check"></i>Türkçe</a></li>
+          <li><a class="nav-lang-item" href="#"><i class="fas fa-check nav-lang-check"></i>English</a></li>
+        </ul>
+      </div>
+      <div class="nav-notif" id="navNotif">
+        <button class="btn-icon" id="notifBtn"><i class="fas fa-bell"></i><span class="badge-dot" id="notifBadge"></span></button>
+        <div class="notif-dropdown">
+          <div class="notif-head"><span class="notif-head-title">Bildirimler</span><a href="#" class="notif-head-clear" id="notifClearAll">Tümünü okundu işaretle</a></div>
+          <div class="notif-list">
+            <div class="notif-item unread" data-id="1">
+              <div class="notif-avatar" style="background:rgba(46,107,230,.15);color:var(--accent);">AK</div>
+              <div class="notif-body"><div class="notif-text"><strong>ahmet_dev</strong> konunuza cevap verdi</div><div class="notif-sub">Route::pre middleware sorusu</div><div class="notif-time"><i class="fas fa-clock"></i> 14dk önce</div></div>
+              <div class="notif-unread-dot"></div>
+            </div>
+            <div class="notif-item unread" data-id="2">
+              <div class="notif-avatar" style="background:rgba(15,154,107,.12);color:var(--accent-2);">MO</div>
+              <div class="notif-body"><div class="notif-text"><strong>mustafaomereser</strong> konunuzu sabitledi</div><div class="notif-sub">zFramework v2.8.0 Sürüm Notları</div><div class="notif-time"><i class="fas fa-clock"></i> 1sa önce</div></div>
+              <div class="notif-unread-dot"></div>
+            </div>
+            <div class="notif-item unread" data-id="3">
+              <div class="notif-avatar" style="background:rgba(217,119,6,.1);color:var(--accent-3);">EK</div>
+              <div class="notif-body"><div class="notif-text"><strong>elif_k</strong> konunuzu beğendi</div><div class="notif-sub">softDelete ile join sorunu</div><div class="notif-time"><i class="fas fa-clock"></i> 3sa önce</div></div>
+              <div class="notif-unread-dot"></div>
+            </div>
+            <div class="notif-item" data-id="4">
+              <div class="notif-avatar" style="background:rgba(139,92,246,.12);color:#8b5cf6;">ST</div>
+              <div class="notif-body"><div class="notif-text"><strong>selin_t</strong> konunuza cevap verdi</div><div class="notif-sub">@forelse boş dizi davranışı</div><div class="notif-time"><i class="fas fa-clock"></i> 1g önce</div></div>
+            </div>
+          </div>
+          <a href="#" class="notif-footer">Tüm bildirimleri gör <i class="fas fa-arrow-right" style="font-size:10px;"></i></a>
+        </div>
+      </div>
+      <a href="new-topic.html" class="btn-new"><i class="fas fa-plus me-1"></i>Yeni Konu</a>
+      <div class="nav-user" id="navUser">
+        <div class="nav-avatar" id="navAvatarBtn">MO</div>
+        <div class="user-dropdown">
+          <div class="user-dropdown-header"><div class="user-dropdown-name">mustafaomereser</div><div class="user-dropdown-email">mustafa@localhost</div></div>
+          <a href="profile.html" class="user-dropdown-item"><span class="dd-icon"><i class="fas fa-user"></i></span>Profilim</a>
+          <a href="#" class="user-dropdown-item"><span class="dd-icon"><i class="fas fa-pen-alt"></i></span>Konularım</a>
+          <a href="#" class="user-dropdown-item"><span class="dd-icon"><i class="fas fa-bookmark"></i></span>Kaydettiklerim</a>
+          <div class="user-dropdown-sep"></div>
+          <a href="#" class="user-dropdown-item"><span class="dd-icon"><i class="fas fa-cog"></i></span>Ayarlar</a>
+          <div class="user-dropdown-sep"></div>
+          <a href="#" class="user-dropdown-item danger" id="signoutBtn"><span class="dd-icon"><i class="fas fa-sign-out-alt"></i></span>Çıkış Yap</a>
+        </div>
+      </div>
+      <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </div></div>
+</nav>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-head"><div class="drawer-brand"><div class="brand-icon" style="width:24px;height:24px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;"><i class="fas fa-terminal"></i></div>zFramework</div><button class="drawer-close" id="drawerClose"><i class="fas fa-times"></i></button></div>
+  <div class="drawer-search"><div class="drawer-search-wrap"><i class="fas fa-search si"></i><input type="text" placeholder="Ara..."></div></div>
+  <div class="drawer-section-label">Navigasyon</div>
+  <a href="index.html" class="drawer-link active"><span class="dl-icon"><i class="fas fa-th-large"></i></span>Forum</a>
+  <a href="#" class="drawer-link"><span class="dl-icon"><i class="fas fa-book"></i></span>Dökümanlar</a>
+  <a href="#" class="drawer-link"><span class="dl-icon"><i class="fab fa-github"></i></span>GitHub</a>
+  <div class="drawer-section-label">Forum</div>
+  <a href="topics.html" class="drawer-link"><span class="dl-icon"><i class="fas fa-clock"></i></span>Son Konular</a>
+  <a href="topics.html?filter=popular" class="drawer-link"><span class="dl-icon"><i class="fas fa-fire"></i></span>Popüler</a>
+  <a href="topics.html?filter=unsolved" class="drawer-link"><span class="dl-icon"><i class="fas fa-question-circle"></i></span>Çözümsüz</a>
+  <div class="drawer-section-label">Görünüm</div>
+  <div class="drawer-link" id="drawerThemeToggle" style="cursor:pointer;"><span class="dl-icon"><i class="fas fa-moon" id="drawerThemeIcon"></i></span><span id="drawerThemeLabel">Karanlık Tema</span></div>
+  <div style="padding:12px 16px 4px;"><a href="new-topic.html" class="btn-new" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 14px;border-radius:8px;animation:none;box-shadow:none;"><i class="fas fa-plus"></i>Yeni Konu</a></div>
+  <div class="drawer-user">
+    <div class="drawer-user-info"><div class="drawer-avatar">MO</div><div><div class="drawer-user-name">mustafaomereser</div><div class="drawer-user-role">Geliştirici</div></div></div>
+    <a href="profile.html" class="drawer-link" style="padding-left:0;border-radius:6px;"><span class="dl-icon"><i class="fas fa-user"></i></span>Profilim</a>
+    <a href="#" class="drawer-link" style="padding-left:0;border-radius:6px;color:var(--danger);"><span class="dl-icon" style="color:var(--danger);"><i class="fas fa-sign-out-alt"></i></span>Çıkış Yap</a>
+  </div>
+</div>
+<div class="search-overlay" id="searchOverlay"><div class="search-overlay-box"><i class="fas fa-search" style="color:var(--txt-muted);font-size:14px;flex-shrink:0;"></i><input type="text" id="searchOverlayInput" placeholder="Konu, kullanıcı veya etiket ara..."><button class="search-overlay-close" id="searchOverlayClose"><i class="fas fa-times"></i></button></div></div>
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-modal">
+    <div class="auth-modal-header"><div class="auth-modal-logo"><div class="auth-modal-logo-icon"><i class="fas fa-terminal"></i></div>zFramework</div><button class="auth-modal-close" id="authModalClose"><i class="fas fa-times"></i></button></div>
+    <div class="auth-tabs"><button class="auth-tab-btn active" data-tab="signin"><i class="fas fa-sign-in-alt me-1"></i>Giriş Yap</button><button class="auth-tab-btn" data-tab="signup"><i class="fas fa-user-plus me-1"></i>Kayıt Ol</button></div>
+    <div class="auth-modal-body">
+      <div class="auth-alert-strip" id="authAlert"><i class="fas fa-exclamation-circle"></i><span id="authAlertMsg"></span></div>
+      <div class="auth-pane active" id="pane-signin">
+        <form id="signinForm" autocomplete="off">
+          <div class="auth-field"><label>E-posta</label><div class="auth-input-wrap"><i class="fas fa-envelope ai"></i><input class="form-control auth-input" type="email" name="email" placeholder="ornek@mail.com" required></div></div>
+          <div class="auth-field"><label>Şifre</label><div class="auth-input-wrap"><i class="fas fa-lock ai"></i><input class="form-control auth-input has-toggle" type="password" name="password" id="signin-pw" placeholder="••••••••" required><button type="button" class="pw-toggle" data-target="signin-pw"><i class="fas fa-eye"></i></button></div></div>
+          <a href="#" class="auth-forgot">Şifremi unuttum?</a>
+          <div class="mb-3"><input type="checkbox" name="keep-logged-in" id="keep-logged-in" class="form-check-input"><label for="keep-logged-in" class="auth-check-label">Beni hatırla</label></div>
+          <button type="submit" class="btn btn-sm btn-primary w-100 auth-submit" id="signinBtn"><span class="auth-spin"></span><span class="btn-label"><i class="fas fa-sign-in-alt me-1"></i>Giriş Yap</span></button>
+        </form>
+      </div>
+      <div class="auth-pane" id="pane-signup">
+        <form id="signupForm" autocomplete="off">
+          <div class="auth-field"><label>Kullanıcı Adı</label><div class="auth-input-wrap"><i class="fas fa-user ai"></i><input class="form-control auth-input" type="text" name="username" placeholder="kullanici_adi" required></div></div>
+          <div class="auth-field"><label>E-posta</label><div class="auth-input-wrap"><i class="fas fa-envelope ai"></i><input class="form-control auth-input" type="email" name="email" placeholder="ornek@mail.com" required></div></div>
+          <div class="row g-2">
+            <div class="col-6"><div class="auth-field"><label>Şifre</label><div class="auth-input-wrap"><i class="fas fa-lock ai"></i><input class="form-control auth-input has-toggle" type="password" name="password" id="signup-pw" placeholder="••••••••" required><button type="button" class="pw-toggle" data-target="signup-pw"><i class="fas fa-eye"></i></button></div></div></div>
+            <div class="col-6"><div class="auth-field"><label>Tekrar</label><div class="auth-input-wrap"><i class="fas fa-lock ai"></i><input class="form-control auth-input has-toggle" type="password" name="re-password" id="signup-pw2" placeholder="••••••••" required><button type="button" class="pw-toggle" data-target="signup-pw2"><i class="fas fa-eye"></i></button></div></div></div>
+          </div>
+          <div class="mb-3"><input type="checkbox" name="terms" id="terms" class="form-check-input" required><label for="terms" class="auth-check-label"><a href="#">Kullanım koşullarını</a> kabul ediyorum</label></div>
+          <button type="submit" class="btn btn-sm btn-primary w-100 auth-submit" id="signupBtn"><span class="auth-spin"></span><span class="btn-label"><i class="fas fa-user-plus me-1"></i>Kayıt Ol</span></button>
+        </form>
+      </div>
+    </div>
+    <div class="auth-modal-footer">Topluluğa katılarak <a href="#">forum kurallarını</a> kabul etmiş olursunuz.</div>
+  </div>
+</div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="breadcrumb-bar"><i class="fas fa-home fa-fw"></i><a href="#">Anasayfa</a><i class="fas fa-chevron-right" style="font-size:9px;"></i><span>Forum</span></div>
+    <h1 class="page-title">Topluluk Forumu</h1>
+    <p class="page-subtitle">zFramework hakkında sorular sor, deneyim paylaş, projeleri sergile.</p>
+    <div class="header-tabs">
+      <a href="#" class="header-tab active" data-filter="all">Tümü</a>
+      <a href="topics.html" class="header-tab" data-filter="latest">Son Konular</a>
+      <a href="topics.html?filter=popular" class="header-tab" data-filter="popular">Popüler</a>
+      <a href="topics.html?filter=unsolved" class="header-tab" data-filter="unsolved">Çözümsüz</a>
+      <a href="#" class="header-tab" data-filter="announcements">Duyurular</a>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div style="padding:24px 0 48px;">
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- Content -->
+      <div class="col-xl-8 col-lg-8">
+
+        <!-- Notice -->
+        <div class="notice-banner">
+          <div class="notice-icon"><i class="fas fa-info-circle"></i></div>
+          <div>
+            <p class="notice-title">zFramework v2.8.0 yayınlandı!</p>
+            <p class="notice-text">AutoSSL, geliştirilmiş ORM ve yeni terminal komutları ile en büyük sürüm. <a href="#">Sürüm notlarını gör →</a></p>
+          </div>
+          <button class="notice-close"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="section-label">Kategoriler</div>
+
+        <!-- Categories — API'den yüklenecek, şimdilik statik -->
+        <div id="categoryList">
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=1'">
+            <div class="forum-row-icon" style="color:#2e6be6;"><i class="fas fa-comments"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">Genel Tartışma</h2>
+              <p class="forum-row-desc">zFramework ile ilgili her türlü soru, fikir ve tartışma.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">284</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">1.8k</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">cPanel entegrasyonu çalışmıyor</div><div class="forum-row-last-meta">mustafaomereser · 12dk</div></div>
+          </div>
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=2'">
+            <div class="forum-row-icon" style="color:#0f9c6b;"><i class="fas fa-route"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">Route & Controller</h2>
+              <p class="forum-row-desc">Route tanımları, middleware, Resource controller ve parametre kullanımı.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">142</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">936</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">Route::pre middleware sorusu</div><div class="forum-row-last-meta">ahmet_dev · 1sa</div></div>
+          </div>
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=3'">
+            <div class="forum-row-icon" style="color:#d97706;"><i class="fas fa-database"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">Model & Veritabanı</h2>
+              <p class="forum-row-desc">ORM sorguları, Migration, Seeder, Transaction ve Observer kullanımı.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">218</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">1.4k</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">softDelete ile join sorunu</div><div class="forum-row-last-meta">elif_k · 3sa</div></div>
+          </div>
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=4'">
+            <div class="forum-row-icon" style="color:#8b5cf6;"><i class="fas fa-code"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">View & Blade Syntax</h2>
+              <p class="forum-row-desc">Şablon direktifleri, ViewProvider, layout/yield/section kullanımı.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">97</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">482</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">@forelse boş dizi davranışı</div><div class="forum-row-last-meta">selin_t · 5sa</div></div>
+          </div>
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=5'">
+            <div class="forum-row-icon" style="color:#ef4444;"><i class="fas fa-shield-alt"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">Auth & Middleware</h2>
+              <p class="forum-row-desc">Kimlik doğrulama, yetkilendirme ve middleware zinciri.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">54</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">312</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">Session yönetimi sorusu</div><div class="forum-row-last-meta">baran_c · 8sa</div></div>
+          </div>
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=6'">
+            <div class="forum-row-icon" style="color:#0ea5e9;"><i class="fas fa-terminal"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">Terminal / CLI</h2>
+              <p class="forum-row-desc">php terminal komutları, migration, seeder, module create kullanımı.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">38</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">197</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">db:migrate hata veriyor</div><div class="forum-row-last-meta">elif_k · 1g</div></div>
+          </div>
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=7'">
+            <div class="forum-row-icon" style="color:#f59e0b;"><i class="fas fa-lock"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">AutoSSL & cPanel</h2>
+              <p class="forum-row-desc">Let's Encrypt entegrasyonu, cPanel yönetimi ve SSL yapılandırması.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">29</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">143</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">SSL yenileme hatası</div><div class="forum-row-last-meta">ahmet_dev · 2g</div></div>
+          </div>
+
+          <div class="forum-row" onclick="location.href='topics.html?cat=8'">
+            <div class="forum-row-icon" style="color:#10b981;"><i class="fas fa-box"></i></div>
+            <div class="forum-row-body">
+              <h2 class="forum-row-title">Modüller</h2>
+              <p class="forum-row-desc">Modüler yapı, module create komutu ve modül entegrasyonları.</p>
+            </div>
+            <div class="forum-row-stats"><span class="st-val">47</span><span class="st-lbl">Konu</span></div>
+            <div class="forum-row-stats"><span class="st-val">218</span><span class="st-lbl">Mesaj</span></div>
+            <div class="forum-row-last"><div class="forum-row-last-title">Modül arası iletişim</div><div class="forum-row-last-meta">selin_t · 3g</div></div>
+          </div>
+
+        </div><!-- /categoryList -->
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-xl-4 col-lg-4">
+
+        <div class="sidebar-block">
+          <div class="sidebar-block-head"><h3><i class="fas fa-list-ul fa-fw me-1"></i>Kategoriler</h3></div>
+          <div class="sidebar-block-body">
+            <a href="topics.html" class="cat-nav-item active"><span class="cat-icon"><i class="fas fa-th-large"></i></span>Tümü<span class="cat-count">909</span></a>
+            <a href="topics.html?cat=1" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-comments"></i></span>Genel Tartışma<span class="cat-count">284</span></a>
+            <a href="topics.html?cat=2" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-route"></i></span>Route & Controller<span class="cat-count">142</span></a>
+            <a href="topics.html?cat=3" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-database"></i></span>Model & Veritabanı<span class="cat-count">218</span></a>
+            <a href="topics.html?cat=4" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-code"></i></span>View & Blade<span class="cat-count">97</span></a>
+            <a href="topics.html?cat=5" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-shield-alt"></i></span>Auth & Middleware<span class="cat-count">54</span></a>
+            <a href="topics.html?cat=6" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-terminal"></i></span>Terminal / CLI<span class="cat-count">38</span></a>
+            <a href="topics.html?cat=7" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-lock"></i></span>AutoSSL & cPanel<span class="cat-count">29</span></a>
+            <a href="topics.html?cat=8" class="cat-nav-item"><span class="cat-icon"><i class="fas fa-box"></i></span>Modüller<span class="cat-count">47</span></a>
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sidebar-block-head"><h3><i class="fas fa-chart-bar fa-fw me-1"></i>İstatistikler</h3></div>
+          <div class="stat-strip">
+            <div class="stat-cell"><div class="stat-val">1.2k</div><div class="stat-lbl">Üye</div></div>
+            <div class="stat-cell"><div class="stat-val">909</div><div class="stat-lbl">Konu</div></div>
+            <div class="stat-cell"><div class="stat-val">5.5k</div><div class="stat-lbl">Mesaj</div></div>
+            <div class="stat-cell"><div class="stat-val" style="color:var(--accent-2);">23</div><div class="stat-lbl">Çevrimiçi</div></div>
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sidebar-block-head"><h3><i class="fas fa-circle fa-fw me-1" style="color:var(--accent-2);font-size:9px;"></i>Çevrimiçi</h3><a href="#">Tümü</a></div>
+          <div class="sidebar-block-body">
+            <div class="online-member"><div class="online-avatar" style="background:rgba(46,107,230,.15);color:var(--accent);">MO</div><div><div class="online-name">mustafaomereser</div><div class="online-role">Geliştirici</div></div><div class="online-dot"></div></div>
+            <div class="online-member"><div class="online-avatar" style="background:rgba(15,154,107,.12);color:var(--accent-2);">AK</div><div><div class="online-name">ahmet_dev</div><div class="online-role">Moderatör</div></div><div class="online-dot"></div></div>
+            <div class="online-member"><div class="online-avatar" style="background:rgba(217,119,6,.1);color:var(--accent-3);">EK</div><div><div class="online-name">elif_k</div><div class="online-role">Üye</div></div><div class="online-dot"></div></div>
+            <div class="online-member"><div class="online-avatar" style="background:rgba(139,92,246,.12);color:#8b5cf6;">ST</div><div><div class="online-name">selin_t</div><div class="online-role">Üye</div></div><div class="online-dot"></div></div>
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sidebar-block-head"><h3><i class="fas fa-tags fa-fw me-1"></i>Etiketler</h3></div>
+          <div class="tag-list">
+            <a href="#" class="tag">Route</a><a href="#" class="tag">Model</a><a href="#" class="tag">Migration</a>
+            <a href="#" class="tag">Middleware</a><a href="#" class="tag">Auth</a><a href="#" class="tag">Blade</a>
+            <a href="#" class="tag">Cache</a><a href="#" class="tag">API</a><a href="#" class="tag">Validator</a>
+            <a href="#" class="tag">Observer</a><a href="#" class="tag">Terminal</a><a href="#" class="tag">AutoSSL</a>
+            <a href="#" class="tag">Crypter</a><a href="#" class="tag">Mail</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6"><span class="footer-brand"><i class="fas fa-terminal me-1"></i>zFramework</span><span style="margin-left:10px;">v2.8.0 — PHP MVC Framework</span></div>
+      <div class="col-md-6 text-md-end mt-2 mt-md-0" style="display:flex;gap:16px;justify-content:flex-end;flex-wrap:wrap;"><a href="#">Dökümanlar</a><a href="#">GitHub</a><a href="#">Forum Kuralları</a><a href="#">İletişim</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="forum.js"></script>
+</body>
+</html>

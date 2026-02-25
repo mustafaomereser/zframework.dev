@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="">
+  <title>Route::pre middleware sorusu — zFramework Forum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="forum.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="site-nav">
+  <div class="container"><div class="nav-inner">
+    <a href="index.html" class="nav-brand"><div class="brand-icon"><i class="fas fa-terminal"></i></div>zFramework<span class="brand-cursor"></span><span class="brand-ver">v2.8.0</span></a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link-item active"><i class="fas fa-th-large fa-fw me-1"></i>Forum</a>
+      <a href="#" class="nav-link-item"><i class="fas fa-book fa-fw me-1"></i>Dökümanlar</a>
+      <a href="#" class="nav-link-item"><i class="fab fa-github fa-fw me-1"></i>GitHub</a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-search"><i class="fas fa-search search-icon"></i><input type="text" placeholder="Ara..."></div>
+      <button class="btn-icon btn-search-mobile" id="searchMobileBtn"><i class="fas fa-search"></i></button>
+      <button class="btn-icon" id="themeToggle"><i class="fas fa-moon" id="themeIcon"></i></button>
+      <div class="nav-lang" id="navLang"><button class="btn-icon" id="langBtn" style="gap:5px;"><i class="fas fa-globe"></i><span class="nav-lang-label">TR</span><i class="fas fa-chevron-down nav-lang-arrow"></i></button><ul class="nav-lang-dropdown"><li><a class="nav-lang-item active" href="#"><i class="fas fa-check nav-lang-check"></i>Türkçe</a></li><li><a class="nav-lang-item" href="#"><i class="fas fa-check nav-lang-check"></i>English</a></li></ul></div>
+      <div class="nav-notif" id="navNotif"><button class="btn-icon" id="notifBtn"><i class="fas fa-bell"></i><span class="badge-dot" id="notifBadge"></span></button><div class="notif-dropdown"><div class="notif-head"><span class="notif-head-title">Bildirimler</span><a href="#" class="notif-head-clear" id="notifClearAll">Tümünü okundu işaretle</a></div><div class="notif-list"><div class="notif-item unread" data-id="1"><div class="notif-avatar" style="background:rgba(46,107,230,.15);color:var(--accent);">AK</div><div class="notif-body"><div class="notif-text"><strong>ahmet_dev</strong> cevap verdi</div><div class="notif-sub">Route::pre middleware sorusu</div><div class="notif-time"><i class="fas fa-clock"></i> 14dk</div></div><div class="notif-unread-dot"></div></div></div><a href="#" class="notif-footer">Tüm bildirimleri gör <i class="fas fa-arrow-right" style="font-size:10px;"></i></a></div></div>
+      <a href="new-topic.html" class="btn-new"><i class="fas fa-plus me-1"></i>Yeni Konu</a>
+      <div class="nav-user" id="navUser"><div class="nav-avatar" id="navAvatarBtn">MO</div><div class="user-dropdown"><div class="user-dropdown-header"><div class="user-dropdown-name">mustafaomereser</div><div class="user-dropdown-email">mustafa@localhost</div></div><a href="profile.html" class="user-dropdown-item"><span class="dd-icon"><i class="fas fa-user"></i></span>Profilim</a><div class="user-dropdown-sep"></div><a href="#" class="user-dropdown-item danger" id="signoutBtn"><span class="dd-icon"><i class="fas fa-sign-out-alt"></i></span>Çıkış Yap</a></div></div>
+      <button class="nav-toggle" id="navToggle"><i class="fas fa-bars"></i></button>
+    </div>
+  </div></div>
+</nav>
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="mobile-drawer" id="mobileDrawer"><div class="drawer-head"><div class="drawer-brand"><div class="brand-icon" style="width:24px;height:24px;background:var(--accent);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;"><i class="fas fa-terminal"></i></div>zFramework</div><button class="drawer-close" id="drawerClose"><i class="fas fa-times"></i></button></div><div class="drawer-search"><div class="drawer-search-wrap"><i class="fas fa-search si"></i><input type="text" placeholder="Ara..."></div></div><div class="drawer-section-label">Forum</div><a href="index.html" class="drawer-link"><span class="dl-icon"><i class="fas fa-th-large"></i></span>Forum</a><a href="topics.html" class="drawer-link"><span class="dl-icon"><i class="fas fa-clock"></i></span>Konular</a><div class="drawer-section-label">Görünüm</div><div class="drawer-link" id="drawerThemeToggle" style="cursor:pointer;"><span class="dl-icon"><i class="fas fa-moon" id="drawerThemeIcon"></i></span><span id="drawerThemeLabel">Karanlık Tema</span></div></div>
+<div class="search-overlay" id="searchOverlay"><div class="search-overlay-box"><i class="fas fa-search" style="color:var(--txt-muted);font-size:14px;flex-shrink:0;"></i><input type="text" id="searchOverlayInput" placeholder="Ara..."><button class="search-overlay-close" id="searchOverlayClose"><i class="fas fa-times"></i></button></div></div>
+<div class="auth-overlay" id="authOverlay"><div class="auth-modal"><div class="auth-modal-header"><div class="auth-modal-logo"><div class="auth-modal-logo-icon"><i class="fas fa-terminal"></i></div>zFramework</div><button class="auth-modal-close" id="authModalClose"><i class="fas fa-times"></i></button></div><div class="auth-tabs"><button class="auth-tab-btn active" data-tab="signin">Giriş Yap</button><button class="auth-tab-btn" data-tab="signup">Kayıt Ol</button></div><div class="auth-modal-body"><div class="auth-alert-strip" id="authAlert"><i class="fas fa-exclamation-circle"></i><span id="authAlertMsg"></span></div><div class="auth-pane active" id="pane-signin"><form id="signinForm"><div class="auth-field"><label>E-posta</label><div class="auth-input-wrap"><i class="fas fa-envelope ai"></i><input class="form-control auth-input" type="email" name="email" required></div></div><div class="auth-field"><label>Şifre</label><div class="auth-input-wrap"><i class="fas fa-lock ai"></i><input class="form-control auth-input has-toggle" type="password" name="password" id="signin-pw" required><button type="button" class="pw-toggle" data-target="signin-pw"><i class="fas fa-eye"></i></button></div></div><button type="submit" class="btn btn-sm btn-primary w-100 auth-submit" id="signinBtn"><span class="auth-spin"></span><span class="btn-label">Giriş Yap</span></button></form></div><div class="auth-pane" id="pane-signup"><form id="signupForm"><div class="auth-field"><label>Kullanıcı Adı</label><div class="auth-input-wrap"><i class="fas fa-user ai"></i><input class="form-control auth-input" type="text" name="username" required></div></div><div class="auth-field"><label>E-posta</label><div class="auth-input-wrap"><i class="fas fa-envelope ai"></i><input class="form-control auth-input" type="email" name="email" required></div></div><div class="row g-2"><div class="col-6"><div class="auth-field"><label>Şifre</label><div class="auth-input-wrap"><i class="fas fa-lock ai"></i><input class="form-control auth-input has-toggle" type="password" name="password" id="signup-pw" required><button type="button" class="pw-toggle" data-target="signup-pw"><i class="fas fa-eye"></i></button></div></div></div><div class="col-6"><div class="auth-field"><label>Tekrar</label><div class="auth-input-wrap"><i class="fas fa-lock ai"></i><input class="form-control auth-input has-toggle" type="password" name="re-password" id="signup-pw2" required><button type="button" class="pw-toggle" data-target="signup-pw2"><i class="fas fa-eye"></i></button></div></div></div></div><div class="mb-3"><input type="checkbox" name="terms" id="terms" class="form-check-input" required><label for="terms" class="auth-check-label"><a href="#">Koşulları</a> kabul ediyorum</label></div><button type="submit" class="btn btn-sm btn-primary w-100 auth-submit" id="signupBtn"><span class="auth-spin"></span><span class="btn-label">Kayıt Ol</span></button></form></div></div></div></div>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="container">
+    <div class="breadcrumb-bar"><i class="fas fa-home fa-fw"></i><a href="index.html">Forum</a><i class="fas fa-chevron-right" style="font-size:9px;"></i><a href="topics.html">Genel Tartışma</a><i class="fas fa-chevron-right" style="font-size:9px;"></i><span>Route::pre middleware sorusu</span></div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-bottom:16px;">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="badge-pill badge-solved"><i class="fas fa-check me-1"></i>Çözüldü</span>
+          <span class="badge-pill badge-cat">Route</span>
+        </div>
+        <h1 class="page-title" style="font-size:18px;">Route::pre ile middleware gruplama nasıl yapılır?</h1>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:6px;flex-wrap:wrap;">
+          <span style="font-size:12px;color:var(--txt-muted);font-family:var(--font-code);"><i class="fas fa-user me-1"></i>ahmet_dev</span>
+          <span style="font-size:12px;color:var(--txt-muted);font-family:var(--font-code);"><i class="fas fa-calendar me-1"></i>18 Şub 2026</span>
+          <span style="font-size:12px;color:var(--txt-muted);font-family:var(--font-code);"><i class="fas fa-eye me-1"></i>342 görüntülenme</span>
+          <span style="font-size:12px;color:var(--txt-muted);font-family:var(--font-code);"><i class="fas fa-comment me-1"></i>8 cevap</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button class="btn-icon" title="Kaydet"><i class="fas fa-bookmark"></i></button>
+        <button class="btn-icon" title="Paylaş"><i class="fas fa-share-alt"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div style="padding:24px 0 48px;">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-xl-8 col-lg-8">
+
+        <!-- OP post -->
+        <div class="post-card op">
+          <div class="post-header">
+            <div class="post-author">
+              <div class="post-avatar" style="background:rgba(217,119,6,.12);color:var(--accent-3);">AK</div>
+              <div>
+                <div class="post-author-name"><a href="profile.html" style="color:var(--txt);text-decoration:none;">ahmet_dev</a></div>
+                <div class="post-author-role" style="color:var(--txt-muted);">Üye · 47 katkı</div>
+              </div>
+            </div>
+            <div class="post-meta">
+              <span class="post-time"><i class="fas fa-clock me-1"></i>18 Şub 2026, 14:32</span>
+              <div class="post-actions">
+                <button class="btn-icon" title="Alıntıla" style="font-size:11px;height:28px;"><i class="fas fa-quote-right"></i></button>
+                <button class="btn-icon" title="Düzenle" style="font-size:11px;height:28px;"><i class="fas fa-pencil-alt"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="post-body">
+            <p>Merhaba, <code>Route::pre()</code> ile belirli bir prefix altındaki tüm route'lara aynı anda middleware uygulamak istiyorum. Örneğin <code>/api</code> altındaki tüm route'larda CSRF kontrolünü devre dışı bırakmak ve <code>AuthMiddleware</code>'i aktif etmek istiyorum.</p>
+            <p>Şu ana kadar denediğim kod:</p>
+            <pre>Route::pre('/api')->noCSRF()->group(function() {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+});</pre>
+            <p>Bu yapı CSRF'yi devre dışı bırakıyor fakat middleware nasıl ekleyebilirim? Dokümantasyonda net bir örnek bulamadım.</p>
+          </div>
+          <div class="post-footer">
+            <div class="post-reactions">
+              <button class="reaction-btn liked" id="likeBtn1" data-id="1"><i class="fas fa-thumbs-up"></i><span>12</span></button>
+              <button class="reaction-btn" data-action="helpful"><i class="fas fa-lightbulb"></i><span>3</span></button>
+            </div>
+            <div style="font-size:11px;color:var(--txt-muted);">
+              <span>#1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reply 1 — Çözüm -->
+        <div class="post-card" style="border-left:3px solid var(--accent-2);">
+          <div class="post-header">
+            <div class="post-author">
+              <div class="post-avatar" style="background:rgba(46,107,230,.15);color:var(--accent);">MO</div>
+              <div>
+                <div class="post-author-name"><a href="profile.html" style="color:var(--txt);text-decoration:none;">mustafaomereser</a></div>
+                <div class="post-author-role" style="color:var(--accent);font-weight:600;">Geliştirici</div>
+              </div>
+            </div>
+            <div class="post-meta">
+              <div class="post-solved-badge"><i class="fas fa-check-circle"></i>Çözüm</div>
+              <span class="post-time"><i class="fas fa-clock me-1"></i>18 Şub 2026, 15:10</span>
+              <div class="post-actions">
+                <button class="btn-icon" title="Alıntıla" style="font-size:11px;height:28px;"><i class="fas fa-quote-right"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="post-body">
+            <p>Merhaba, <code>Route::pre()</code> zincirine <code>->middleware()</code> ekleyebilirsiniz:</p>
+            <pre>Route::pre('/api')
+    ->noCSRF()
+    ->middleware([AuthMiddleware::class, 'throttle:60,1'])
+    ->group(function() {
+        Route::get('/users', [UserController::class, 'index']);
+        Route::post('/users', [UserController::class, 'store']);
+        Route::resource('/posts', PostController::class);
+    });</pre>
+            <p>Ayrıca iç içe <code>Route::pre()</code> de kullanabilirsiniz:</p>
+            <pre>Route::pre('/api')->noCSRF()->group(function() {
+    // Public API routes
+    Route::get('/status', fn() => response()->json(['ok' => true]));
+
+    // Auth gerektiren route'lar
+    Route::pre()->middleware([AuthMiddleware::class])->group(function() {
+        Route::resource('/users', UserController::class);
+    });
+});</pre>
+          </div>
+          <div class="post-footer">
+            <div class="post-reactions">
+              <button class="reaction-btn liked" data-id="2"><i class="fas fa-thumbs-up"></i><span>24</span></button>
+              <button class="reaction-btn" data-action="helpful"><i class="fas fa-lightbulb"></i><span>8</span></button>
+            </div>
+            <div style="font-size:11px;color:var(--txt-muted);"><span>#2</span></div>
+          </div>
+        </div>
+
+        <!-- Reply 2 -->
+        <div class="post-card">
+          <div class="post-header">
+            <div class="post-author">
+              <div class="post-avatar" style="background:rgba(15,154,107,.12);color:var(--accent-2);">AK</div>
+              <div>
+                <div class="post-author-name"><a href="profile.html" style="color:var(--txt);text-decoration:none;">ahmet_dev</a></div>
+                <div class="post-author-role" style="color:var(--txt-muted);">Üye · 47 katkı</div>
+              </div>
+            </div>
+            <div class="post-meta">
+              <span class="post-time"><i class="fas fa-clock me-1"></i>18 Şub 2026, 15:45</span>
+            </div>
+          </div>
+          <div class="post-body">
+            <p>Teşekkürler @mustafaomereser! İç içe <code>Route::pre()</code> yapısı tam ihtiyacım olan şeydi. Konuyu çözüldü olarak işaretliyorum.</p>
+          </div>
+          <div class="post-footer">
+            <div class="post-reactions">
+              <button class="reaction-btn" data-id="3"><i class="fas fa-thumbs-up"></i><span>5</span></button>
+            </div>
+            <div style="font-size:11px;color:var(--txt-muted);"><span>#3</span></div>
+          </div>
+        </div>
+
+        <!-- Reply Form -->
+        <div class="reply-form-wrap">
+          <div class="reply-form-title"><i class="fas fa-reply" style="color:var(--accent);"></i> Cevap Yaz</div>
+          <div class="reply-toolbar">
+            <button class="toolbar-btn" title="Kalın"><i class="fas fa-bold"></i></button>
+            <button class="toolbar-btn" title="İtalik"><i class="fas fa-italic"></i></button>
+            <button class="toolbar-btn" title="Kod"><i class="fas fa-code"></i></button>
+            <button class="toolbar-btn" title="Blok kod"><i class="fas fa-file-code"></i></button>
+            <button class="toolbar-btn" title="Link"><i class="fas fa-link"></i></button>
+            <button class="toolbar-btn" title="Alıntı"><i class="fas fa-quote-right"></i></button>
+          </div>
+          <textarea class="reply-textarea" id="replyContent" placeholder="Cevabınızı yazın... Kod için ``` kullanabilirsiniz."></textarea>
+          <div class="reply-footer">
+            <div style="font-size:12px;color:var(--txt-muted);">
+              <i class="fas fa-info-circle me-1"></i>Markdown desteklenmektedir
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button class="btn-icon" style="height:34px;width:auto;padding:0 12px;font-size:12px;" onclick="zForum.auth.open('signin')">
+                <i class="fas fa-sign-in-alt me-1"></i>Giriş yap
+              </button>
+              <button class="btn btn-sm btn-primary" id="replySubmitBtn" onclick="submitReply()">
+                <i class="fas fa-paper-plane me-1"></i>Gönder
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar -->
+      <div class="col-xl-4 col-lg-4">
+
+        <div class="sidebar-block">
+          <div class="sidebar-block-head"><h3><i class="fas fa-info-circle fa-fw me-1"></i>Konu Bilgisi</h3></div>
+          <div style="padding:14px 16px;">
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <span style="color:var(--txt-muted);">Durum</span>
+                <span style="color:var(--accent-2);font-weight:600;"><i class="fas fa-check-circle me-1"></i>Çözüldü</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <span style="color:var(--txt-muted);">Kategori</span>
+                <a href="topics.html?cat=2" style="color:var(--accent);">Route & Controller</a>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <span style="color:var(--txt-muted);">Açan</span>
+                <a href="profile.html" style="color:var(--accent);">ahmet_dev</a>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <span style="color:var(--txt-muted);">Tarih</span>
+                <span style="color:var(--txt);font-family:var(--font-code);">18 Şub 2026</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;">
+                <span style="color:var(--txt-muted);">Görüntülenme</span>
+                <span style="color:var(--txt);font-family:var(--font-code);">342</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sidebar-block-head"><h3><i class="fas fa-tags fa-fw me-1"></i>Etiketler</h3></div>
+          <div class="tag-list"><a href="#" class="tag">Route</a><a href="#" class="tag">Middleware</a><a href="#" class="tag">API</a><a href="#" class="tag">Auth</a></div>
+        </div>
+
+        <div class="sidebar-block">
+          <div class="sidebar-block-head"><h3><i class="fas fa-link fa-fw me-1"></i>Benzer Konular</h3></div>
+          <div style="padding:4px 0;">
+            <div class="profile-topic-row" onclick="location.href='topic-detail.html'">
+              <div class="profile-topic-title">Route::resource metodları nasıl özelleştirilir?</div>
+              <div class="profile-topic-meta">12 cevap</div>
+            </div>
+            <div class="profile-topic-row" onclick="location.href='topic-detail.html'">
+              <div class="profile-topic-title">Middleware zinciri sırası önemli mi?</div>
+              <div class="profile-topic-meta">7 cevap</div>
+            </div>
+            <div class="profile-topic-row" onclick="location.href='topic-detail.html'">
+              <div class="profile-topic-title">CSRF token nasıl devre dışı bırakılır?</div>
+              <div class="profile-topic-meta">5 cevap</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer"><div class="container"><div class="row align-items-center"><div class="col-md-6"><span class="footer-brand"><i class="fas fa-terminal me-1"></i>zFramework</span><span style="margin-left:10px;">v2.8.0</span></div><div class="col-md-6 text-md-end mt-2 mt-md-0" style="display:flex;gap:16px;justify-content:flex-end;flex-wrap:wrap;"><a href="#">Dökümanlar</a><a href="#">GitHub</a></div></div></div></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="forum.js"></script>
+<script>
+  // Like toggle
+  $(document).on('click', '.reaction-btn', function() {
+    const $btn = $(this);
+    const id   = $btn.data('id');
+    const liked = $btn.hasClass('liked');
+    $btn.toggleClass('liked');
+    const $num = $btn.find('span');
+    $num.text(parseInt($num.text()) + (liked ? -1 : 1));
+    if (id) zForum.post(zForum.API.likePost(id), { liked: !liked }).catch(() => {});
+  });
+
+  // Reply submit
+  function submitReply() {
+    const content = $('#replyContent').val().trim();
+    if (!content) return;
+    const $btn = $('#replySubmitBtn');
+    $btn.prop('disabled', true).html('<span class="auth-spin" style="display:inline-block;animation:authSpin .6s linear infinite;"></span>');
+    zForum.post(zForum.API.reply(1), { content })
+      .then(() => {
+        zForum.toast.success('Cevabınız eklendi!');
+        $('#replyContent').val('');
+        $btn.prop('disabled', false).html('<i class="fas fa-paper-plane me-1"></i>Gönder');
+      })
+      .catch(() => {
+        zForum.toast.error('Cevap gönderilemedi.');
+        $btn.prop('disabled', false).html('<i class="fas fa-paper-plane me-1"></i>Gönder');
+      });
+  }
+</script>
+</body>
+</html>
